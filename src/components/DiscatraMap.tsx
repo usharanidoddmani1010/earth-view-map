@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import maplibregl, { type Map as MlMap, type StyleSpecification } from "maplibre-gl";
+import { Map as MlMap, NavigationControl, ScaleControl, type StyleSpecification } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { RISK_ZONES, riskGeoJSON, type RiskZone } from "@/lib/discatra-data";
 
@@ -133,7 +133,7 @@ export default function DiscatraMap({ basemap, target, showRisk, onSelectZone }:
 
   useEffect(() => {
     if (!container.current || map.current) return;
-    const m = new maplibregl.Map({
+    const m = new MlMap({
       container: container.current,
       style: buildStyle("satellite"),
       center: [80.5, 22.5],
@@ -143,8 +143,8 @@ export default function DiscatraMap({ basemap, target, showRisk, onSelectZone }:
       attributionControl: { compact: true },
     });
     map.current = m;
-    m.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "bottom-right");
-    m.addControl(new maplibregl.ScaleControl({ unit: "metric" }), "bottom-left");
+    m.addControl(new NavigationControl({ visualizePitch: true }), "bottom-right");
+    m.addControl(new ScaleControl({ unit: "metric" }), "bottom-left");
     m.on("load", () => setReady(true));
 
     const hit = ["risk-markers", "risk-zone-fill"];
