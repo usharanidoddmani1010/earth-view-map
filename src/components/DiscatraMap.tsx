@@ -145,7 +145,12 @@ export default function DiscatraMap({ basemap, target, showRisk, onSelectZone }:
     map.current = m;
     m.addControl(new NavigationControl({ visualizePitch: true }), "bottom-right");
     m.addControl(new ScaleControl({ unit: "metric" }), "bottom-left");
-    m.on("load", () => setReady(true));
+    m.on("load", () => {
+      m.resize();
+      setReady(true);
+    });
+    const ro = new ResizeObserver(() => m.resize());
+    ro.observe(container.current);
 
     const hit = ["risk-markers", "risk-zone-fill"];
     m.on("click", (e) => {
@@ -163,6 +168,7 @@ export default function DiscatraMap({ basemap, target, showRisk, onSelectZone }:
     });
 
     return () => {
+      ro.disconnect();
       m.remove();
       map.current = null;
     };
@@ -192,5 +198,5 @@ export default function DiscatraMap({ basemap, target, showRisk, onSelectZone }:
     m.flyTo({ center: [target.lng, target.lat], zoom: target.zoom, speed: 1.1, curve: 1.4 });
   }, [target]);
 
-  return <div ref={container} className="absolute inset-0" />;
+  return <div ref={container} className="h-full w-full" />;
 }
