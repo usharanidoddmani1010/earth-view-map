@@ -92,7 +92,6 @@ export const riskGeoJSON = () => ({
   type: "FeatureCollection" as const,
   features: RISK_ZONES.map((z) => ({
     type: "Feature" as const,
-    id: z.id,
     geometry: { type: "Point" as const, coordinates: [z.lng, z.lat] },
     properties: {
       id: z.id,
