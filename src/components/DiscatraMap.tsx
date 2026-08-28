@@ -143,6 +143,7 @@ export default function DiscatraMap({ basemap, target, showRisk, onSelectZone }:
       attributionControl: { compact: true },
     });
     map.current = m;
+    (window as unknown as { __discatraMap?: MlMap }).__discatraMap = m;
     m.addControl(new NavigationControl({ visualizePitch: true }), "bottom-right");
     m.addControl(new ScaleControl({ unit: "metric" }), "bottom-left");
     m.on("load", () => {
